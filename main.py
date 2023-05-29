@@ -1,5 +1,5 @@
 import streamlit as st
-from components.data import get
+from data import dashboard
 
 st.set_page_config(layout="wide")
 
@@ -14,11 +14,12 @@ st.header('Phonepe data Visualsation')
 
 select, maps, sidebar = st.columns([1,3,1])
 
-def show_data(category, year, quarter):
+def show_dashboard(category, year, quarter):
+    dash_data = dashboard.generate_dashboard(category, year, quarter)
 
-    datas = get.map_data(category, year, quarter)
-    if datas is not None:
-        map, data, agg_data = datas
+    if dash_data is not None:
+        map, data, agg_data = dash_data
+        
         if category=="transaction":
             with maps:
                 st.markdown("**:blue[Total Transactions in Millions]**")
@@ -30,9 +31,9 @@ def show_data(category, year, quarter):
                 st.plotly_chart(map)
             with sidebar:
                 st.markdown("**:blue[Transactions in Millions and Amount in cr `\u20B9` by category]**")
-                for ind in agg_data.index:
-                    st.subheader(agg_data["transaction_type"][ind])
-                    st.write(agg_data["transactions_M"][ind], agg_data['amount_cr'][ind])
+                for idx in agg_data.index:
+                    st.subheader(agg_data["transaction_type"][idx])
+                    st.write(agg_data["transactions_M"][idx], agg_data['amount_cr'][idx])
 
         elif category=="user":
             with maps:
@@ -46,12 +47,13 @@ def show_data(category, year, quarter):
                 if agg_data.empty == True:
                     st.markdown("**:black[no data to show, empty dataframe]**")
                 else:    
-                    for ind in agg_data.index:
-                        st.subheader(agg_data["brand"][ind])
-                        st.write(agg_data["transactions_M"][ind], (agg_data['percentage'][ind]*100).round(2))
+                    for idx in agg_data.index:
+                        st.subheader(agg_data["brand"][idx])
+                        st.write(agg_data["transactions_M"][idx], (agg_data['percentage'][idx]*100).round(2))
     else:
         with maps:
             st.markdown("**:black[no data to show, empty dataframe]**")
+            
 with select:
     category = st.selectbox(
     'Get data about',
@@ -66,4 +68,4 @@ with select:
         ('Q1','Q2','Q3','Q4'))
 
     if st.button('Get Results'):
-        show_data(category.lower(), int(year), int(quarter[1]))
+        show_dashboard(category.lower(), int(year), int(quarter[1]))

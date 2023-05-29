@@ -1,30 +1,29 @@
 import plotly.express as px
-from components.model import db 
+from data import mysql
 
-def map_data(category, year, quarter):
-        
-        if category=="transaction":
+def generate_dashboard(category, year, quarter):
+        if category == "transaction":
                 try:
-                        aggregate_transactions = db.read("aggregate_transactions") 
-                        map_transactions = db.read("map_transactions") 
+                        aggregate_transactions = mysql.read("aggregate_transactions") 
+                        map_transactions = mysql.read("map_transactions") 
                         aggregate_transactions = aggregate_transactions[(aggregate_transactions["year"]==(year)) & (aggregate_transactions["quarter"]==quarter)]
                         map_transactions = map_transactions[(map_transactions["year"] == year) & (map_transactions["quarter"] == quarter)]
-                        return [map(map_transactions,"transaction"),map_transactions, aggregate_transactions]
+                        return [generate_map(map_transactions,"transaction"),map_transactions, aggregate_transactions]
                 except:
                         return None
                             
-        elif category=="user":
+        elif category == "user":
                 try:
-                        aggregate_users = db.read("aggregate_users")     
-                        map_users = db.read("map_users")     
+                        aggregate_users = mysql.read("aggregate_users")     
+                        map_users = mysql.read("map_users")     
                         aggregate_users = aggregate_users[(aggregate_users["year"]==year) & (aggregate_users["quarter"] == quarter)]
                         map_users = map_users[(map_users["year"]==year) & (map_users["quarter"]==quarter)]
-                        return [map(map_users, "user"), map_users, aggregate_users]
+                        return [generate_map(map_users, "user"), map_users, aggregate_users]
                 except:
                         return None
 
-def map(data, category):
-        if category=="transaction":
+def generate_map(data, category):
+        if category == "transaction":
                 fig = px.choropleth(
                 data,
                 geojson="https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson",
@@ -39,8 +38,8 @@ def map(data, category):
                 )                
                 fig.update_geos(fitbounds="locations", visible=False)
                 return fig
-
-        elif category=="user":
+                
+        elif category == "user":
                 fig = px.choropleth(
                 data,
                 geojson="https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson",
