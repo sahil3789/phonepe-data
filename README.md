@@ -13,7 +13,7 @@ streamlit : <code> pip install streamlit </code> <br/>
 pysql : <code> pip install pysql </code> <br/>
 plotly : <code> pip install plotly </code> <br/>
 
-<h3>Data Folder Structure </h3>
+<h3>Data Folder Structure</h3>
 
 ```json
 data
