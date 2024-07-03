@@ -1,6 +1,10 @@
 # phonePe Pulse - Data
 
 Phonepe-data is a data app to help visualize user and transaction details of the app. It is inspired by [phonepe pulse](https://www.phonepe.com/pulse/explore/transaction/2022/4/).<br/>
+
+![phonepe=transactions](https://github.com/sahil3789/phonepe-data/assets/63464608/20b2cd0d-50c2-4d71-beba-4924054e0221)
+![phonepe-users](https://github.com/sahil3789/phonepe-data/assets/63464608/2cdfa522-ddfa-460e-adf1-20d062547ba9)
+
 Find the data [here](https://github.com/PhonePe/pulse#readme)<br />
 
 stack : python, mysql, streamlit, plotly.
